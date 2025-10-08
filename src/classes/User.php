@@ -1,5 +1,9 @@
 <?php
-    // Functie: classdefinitie User 
+
+use PDO;
+use PDOException;
+
+    // Functie: classdefinitie User
     // Auteur: Studentnaam
 
     class User{
@@ -55,6 +59,35 @@
             // Test username > 3 tekens
             
             return $errors;
+        }
+
+        public function validateLogin(string $username): bool
+        {
+            $username = trim($username);
+            $length = mb_strlen($username, 'UTF-8');
+
+            if ($length < 3 || $length > 50) {
+                return false;
+            }
+
+            return true;
+        }
+
+        private function dbConnect(): ?PDO
+        {
+            $dsn = 'mysql:host=localhost;dbname=Login;charset=utf8mb4';
+
+            try {
+                $pdo = new PDO($dsn, 'root', '');
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+                return $pdo;
+            } catch (PDOException $exception) {
+                error_log('Database connection failed: ' . $exception->getMessage());
+            }
+
+            return null;
         }
 
         public function loginUser(): bool {
