@@ -1,5 +1,9 @@
 <?php
-    // Functie: classdefinitie User 
+
+use PDO;
+use PDOException;
+
+    // Functie: classdefinitie User
     // Auteur: Studentnaam
 
     class User{
