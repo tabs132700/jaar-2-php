@@ -57,6 +57,18 @@
             return $errors;
         }
 
+        public function validateLogin(string $username): bool
+        {
+            $username = trim($username);
+            $length = mb_strlen($username, 'UTF-8');
+
+            if ($length < 3 || $length > 50) {
+                return false;
+            }
+
+            return true;
+        }
+
         public function loginUser(): bool {
 
             // Connect database
