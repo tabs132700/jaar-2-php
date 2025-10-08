@@ -74,17 +74,42 @@ use PDOException;
         }
 
         public function loginUser(): bool {
+            $username = trim($this->username);
+            $password = $this->password;
 
-            // Connect database
+            if ($username === '' || $password === '') {
+                return false;
+            }
 
-            // Zoek user in de table user met username = $this->username
-            // Doe SELECT * from user WHERE username = $this->username
+            $pdo = $this->dbConnect();
 
+            if ($pdo === null) {
+                return false;
+            }
 
-            // Indien gevonden EN password klopt dan sessie vullen
+            try {
+                $statement = $pdo->prepare('SELECT * FROM User WHERE username = :username');
+                $statement->execute(['username' => $username]);
+                $user = $statement->fetch();
 
-            // Return true indien gelukt anders false
-            return true;
+                if ($user && isset($user['password']) && password_verify($password, $user['password'])) {
+                    if (session_status() !== PHP_SESSION_ACTIVE) {
+                        session_start();
+                    }
+
+                    if (isset($user['id'])) {
+                        $_SESSION['user_id'] = $user['id'];
+                    }
+
+                    $_SESSION['username'] = $user['username'] ?? $username;
+
+                    return true;
+                }
+            } catch (PDOException $exception) {
+                error_log('Login failed: ' . $exception->getMessage());
+            }
+
+            return false;
         }
 
         // Check if the user is already logged in
