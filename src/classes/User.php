@@ -1,5 +1,9 @@
 <?php
-    // Functie: classdefinitie User 
+
+use PDO;
+use PDOException;
+
+    // Functie: classdefinitie User
     // Auteur: Studentnaam
 
     class User{
@@ -57,18 +61,72 @@
             return $errors;
         }
 
-        public function loginUser(): bool {
+        public function validateLogin(string $username): bool
+        {
+            $username = trim($username);
+            $length = mb_strlen($username, 'UTF-8');
 
-            // Connect database
+            if ($length < 3 || $length > 50) {
+                return false;
+            }
 
-            // Zoek user in de table user met username = $this->username
-            // Doe SELECT * from user WHERE username = $this->username
-
-
-            // Indien gevonden EN password klopt dan sessie vullen
-
-            // Return true indien gelukt anders false
             return true;
+        }
+
+        protected function dbConnect(): ?PDO
+        {
+            $dsn = 'mysql:host=localhost;dbname=Login;charset=utf8mb4';
+            $options = [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ];
+
+            try {
+                return new PDO($dsn, 'root', '', $options);
+            } catch (PDOException $exception) {
+                error_log('Database connection failed: ' . $exception->getMessage());
+            }
+
+            return null;
+        }
+
+        public function loginUser(): bool {
+            $username = trim($this->username);
+            $password = $this->password;
+
+            if ($username === '' || $password === '') {
+                return false;
+            }
+
+            $pdo = $this->dbConnect();
+
+            if ($pdo === null) {
+                return false;
+            }
+
+            try {
+                $statement = $pdo->prepare('SELECT * FROM User WHERE username = :username');
+                $statement->execute(['username' => $username]);
+                $user = $statement->fetch();
+
+                if ($user && isset($user['password']) && password_verify($password, $user['password'])) {
+                    if (session_status() !== PHP_SESSION_ACTIVE) {
+                        session_start();
+                    }
+
+                    if (isset($user['id'])) {
+                        $_SESSION['user_id'] = $user['id'];
+                    }
+
+                    $_SESSION['username'] = $user['username'] ?? $username;
+
+                    return true;
+                }
+            } catch (PDOException $exception) {
+                error_log('Login failed: ' . $exception->getMessage());
+            }
+
+            return false;
         }
 
         // Check if the user is already logged in
