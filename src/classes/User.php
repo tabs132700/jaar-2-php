@@ -73,23 +73,6 @@ use PDOException;
             return true;
         }
 
-        private function dbConnect(): ?PDO
-        {
-            $dsn = 'mysql:host=localhost;dbname=Login;charset=utf8mb4';
-
-            try {
-                $pdo = new PDO($dsn, 'root', '');
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
-                return $pdo;
-            } catch (PDOException $exception) {
-                error_log('Database connection failed: ' . $exception->getMessage());
-            }
-
-            return null;
-        }
-
         public function loginUser(): bool {
 
             // Connect database
