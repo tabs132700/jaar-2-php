@@ -1,17 +1,19 @@
 <?php
 	// Functie: programma login OOP 
     // Auteur: Studentnaam
+	require_once('config.php');
 	require_once('classes/User.php');
-
-	$user = new User();
+	$pdo = getPDO();
+	$user = new User($pdo);
 	$errors=[];
 
 	// Is de register button aangeklikt?
 	if(isset($_POST['register-btn'])){
 		
 		// Gegevens uit formulier halen
-		$user->username = $_POST['username'];
-		$user->setPassword($_POST['password']);
+		$user->username = $_POST['username'] ?? '';
+		$user->setPassword($_POST['password'] ?? '');
+		$email = $_POST['email'] ?? '';
 
 		// Validatie gegevens
 		// Hoe???
@@ -19,7 +21,14 @@
 		// Test of er geen errors zijn
 		if(count($errors) == 0){
 			// Register user
-			$errors = $user->registerUser();
+			try {
+				$ok = $user->registerUser($user->username, $user->getPassword(), $email);
+				if (!$ok) {
+					$errors[] = "Registratie mislukt.";
+				}
+			} catch (RuntimeException $ex) {
+				$errors[] = $ex->getMessage();
+			}
 		}
 		
 		if(count($errors) > 0){
@@ -58,7 +67,11 @@
 					<label>Username</label>
 					<input type="text"  name="username" />
 				</div>
-				<div >
+				<div>
+					<label>Email</label>
+					<input type="email"  name="email" />
+				</div>
+				<div>
 					<label>Password</label>
 					<input type="password"  name="password" />
 				</div>

@@ -3,15 +3,17 @@
     // Auteur: Studentnaam
 
     // Initialisatie
-    include 'classes/User.php';
+    require_once 'config.php';
+    require_once 'classes/User.php';
+    $pdo = getPDO();
 
     //Main
-    $piet = new User();
+    $piet = new User($pdo);
     $piet->username = "Piet";
 
     $piet->showUser();
 
-    $jan = new User();
+    $jan = new User($pdo);
     $jan->username = "Jan";
     $jan->showUser();
 

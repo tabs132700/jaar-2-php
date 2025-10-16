@@ -2,9 +2,11 @@
 	// Functie: programma login OOP 
     // Auteur: Studentnaam
 
-    // Initialisatie
+	// Initialisatie
+	require_once('config.php');
 	require_once('classes/User.php');
-	$user = new User();
+	$pdo = getPDO();
+	$user = new User($pdo);
 	$errors=[];	
 	
 	// Is de login button aangeklikt?

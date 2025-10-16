@@ -3,9 +3,10 @@
     // Auteur: Studentnaam
 
     // Initialisatie
+    require_once 'config.php';
 	require_once 'classes/User.php';
-	
-	$user = new User();
+	$pdo = getPDO();
+	$user = new User($pdo);
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +28,7 @@
 
 	// Indien Logout geklikt
 	if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
-		$user->Logout();
+		$user->logout();
 	}
 
 	// Check login session: staat de user in de session?
@@ -39,7 +40,9 @@
 	} else {
 		
 		// select userdata from database
-		$user->getUser($user->username);
+		if (isset($_SESSION['username'])) {
+			$user->getUser($_SESSION['username']);
+		}
 		
 		// Print userdata
 		echo "<h2>Het spel kan beginnen</h2>";
