@@ -1,0 +1,1 @@
+{"version":2,"defects":[],"times":{"BikeRepositoryTest::testCreateAndGetById":0.902,"BikeRepositoryTest::testUpdate":0.002,"BikeRepositoryTest::testDelete":0,"BikeRepositoryTest::testGetAllReturnsArray":0.003,"BikeTest::testBikeHoldsData":0,"DatabaseTest::testDatabaseReturnsPdoConnection":0.001}}

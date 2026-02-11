@@ -1,0 +1,33 @@
+<mxfile host="app.diagrams.net" modified="2025-12-18T00:00:00.000Z" agent="ChatGPT" version="24.7.8" type="device">
+  <diagram id="fietsenmaker-classdiagram" name="Class diagram">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Title text -->
+        <mxCell id="title" value="Voorbeeld classdiagram" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=34;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="60" width="600" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Left UML Class: Fietsenmaker -->
+        <mxCell id="c1" value="Fietsenmaker|+ merk: varchar(255)\l+ type: varchar(255)\l+ prijs: int\l|+ getMerk(): string\l+ getType(): string\l+ getPrijs(): int\l" style="shape=umlClass;whiteSpace=wrap;html=1;rounded=0;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="170" y="210" width="320" height="220" as="geometry"/>
+        </mxCell>
+
+        <!-- Right UML Class: Fiets -->
+        <mxCell id="c2" value="Fiets|+ id: int\l+ merk: varchar(255)\l+ type: varchar(255)\l+ prijs: int\l+ foto: varchar(100)\l|+ getId(): int\l+ getMerk(): string\l+ getType(): string\l+ getPrijs(): int\l+ getFoto(): string\l" style="shape=umlClass;whiteSpace=wrap;html=1;rounded=0;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="610" y="210" width="360" height="250" as="geometry"/>
+        </mxCell>
+
+        <!-- Connector -->
+        <mxCell id="e1" value="beheert&#xa;1 .. *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;startArrow=none;startFill=0;" edge="1" parent="1" source="c1" target="c2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="320" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

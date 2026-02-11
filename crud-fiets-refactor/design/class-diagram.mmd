@@ -1,0 +1,29 @@
+```mermaid
+classDiagram
+    class Bike {
+        +int? id
+        +string merk
+        +string type
+        +int prijs
+        +string foto
+    }
+
+    class Database {
+        -string dsn
+        -string user
+        -string password
+        +getConnection() PDO
+    }
+
+    class BikeRepository {
+        -PDO pdo
+        +getAll() array
+        +getById(id:int) Bike?
+        +create(bike:Bike) int
+        +update(bike:Bike) bool
+        +delete(id:int) bool
+    }
+
+    BikeRepository --> Bike
+    BikeRepository --> Database
+```
